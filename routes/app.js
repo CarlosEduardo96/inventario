@@ -23,7 +23,18 @@ router.get('/', function(req, res, next) {
 
 router.get('/lista', function(req, res, next){
     mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
-        console.log(rows);
+        //console.log(rows);
+        res.render('lista',{lst_productos: rows});      
+    });
+}).post('/lista/search', function(req, res, next){
+    var query ="SELECT * FROM producto;";
+    if(req.body.search){
+        query= `SELECT * FROM producto WHERE (sku ILIKE '%${req.body.search}%' OR nombre ILIKE '%${req.body.search}%')`;
+    }
+
+    //console.log(query);
+    mysql.query(query, (err, rows, fields) => {
+        //console.log(rows);
         res.render('lista',{lst_productos: rows});      
     });
 });
@@ -37,9 +48,9 @@ router.get('/form/product/:id?',function(req, res, next){
         , cantidad: 0
     }
     if (req.params.id){
-        console.log('ID:', req.params.id);
+        //console.log('ID:', req.params.id);
         mysql.query(`SELECT * FROM producto WHERE id = ${req.params.id}`, (err, rows, fields) => {
-            console.log(rows);
+            //console.log(rows);
             producto.id = rows[0].id;
             producto.sku = rows[0].sku;
             producto.nombre = rows[0].nombre;
@@ -53,8 +64,8 @@ router.get('/form/product/:id?',function(req, res, next){
         res.render('form_product', {product: producto});
     }
 }).post('/form/product/:id?', function(req, res, next){
-    console.log('ID:', req.params.id);
-    console.log(req.body);
+    // console.log('ID:', req.params.id);
+    // console.log(req.body);
     var query = "";
     if(req.params.id){
         query = `UPDATE producto SET 
@@ -80,10 +91,20 @@ router.get('/form/product/:id?',function(req, res, next){
     mysql.query(query);
 
     mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
-        console.log(rows);
+        // console.log(rows);
         res.render('lista',{lst_productos: rows});      
     });
 });
+
+
+router.post('/delete/:id', function(req, res, next){
+    mysql.query(`DELETE FROM producto WHERE id = ${req.params.id}`);
+    mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
+        //console.log(rows);
+        res.render('lista',{lst_productos: rows});      
+    });
+});
+
 
   
 module.exports = router;
