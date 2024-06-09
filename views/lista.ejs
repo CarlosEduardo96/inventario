@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <title>Inicio</title>
+</head>
+<body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="/">Inicio</a>
+          <form class="d-flex" role="search" method="post" action="/lista/search">
+            <input class="form-control me-2" name="search" id="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <a class="navbar-brand text-light" href="/form/product">Agregar</a>          
+        </div>
+      </nav>
+    <br/>
+    <div class="container">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Sku</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Total</th>
+                <th scope="col" colspan="2">Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(lst_productos){%>
+                <% for(var item=0; item < lst_productos.length; item++){%>
+                    <tr>
+                      <th scope="row"><%=lst_productos[item].id%></th>
+                      <th scope="row"><%=lst_productos[item].sku%></th>
+                      <th scope="row"><%=lst_productos[item].nombre%></th>
+                      <th scope="row"><%=lst_productos[item].descripcion%></th>
+                      <th scope="row"><%=lst_productos[item].precio%></th>
+                      <th scope="row"><%=lst_productos[item].cantidad%></th>
+                      <th scope="row">                        
+                        <a class="btn btn-warning" href="/form/product/<%=lst_productos[item].id%>">Editar</a>
+                      </th>      
+                      <th scope="row">
+                        <form method="post" action="/delete/<%=lst_productos[item].id%>">                          
+                          <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                      </th>                
+                    </tr> 
+                <%}%>
+              <%}else{%>
+                <tr>
+                  <td colspan="7">Sin  resultados</td>
+                </tr>
+              <%}%>              
+            </tbody>
+          </table>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+</body>
+</html>
