@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <title>Inicio</title>
+</head>
+<body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="/lista">Lista</a>        
+        </div>
+      </nav>
+    <br/>
+    <div class="container">
+        <form class="row" method="post">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary mb-3">GUARDAR</button>
+            </div>
+            <input type="hidden" name ="id" value="<%=product.id%>"/>
+            <div class="col-4 mb-3">
+                <label for="sku" class="form-label">sku</label>
+                <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU del producto" maxlength="30" value="<%=product.sku%>"required>
+            </div>
+            <div class="col-8 mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre del producto" maxlength="100" value="<%=product.nombre%>" required>
+            </div>
+            <div class="col-12 mb-3">
+                <label for="descripcion" class="form-label">Descripcion</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="200"><%=product.descripcion%></textarea>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="precio" class="form-label">Precio</label>
+                <input class="form-control" id="precio" name="precio" rows="3"  value="<%=product.precio%>"  required/>
+            </div>
+            <div class="col-6 mb-3">
+                <label for="cantidad" class="form-label">cantidad</label>
+                <input class="form-control" id="descripcion" name="cantidad" rows="3" type="number" value="<%=product.cantidad%>" required>
+            </div>
+        </form>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+</body>
+</html>
