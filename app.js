@@ -4,10 +4,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const moment = require("moment");
+
 
 //var indexRouter = require('./routes/index');
 //var usersRouter = require('./routes/users');
 var appRouter = require('./routes/app');
+var productoRouter = require('./routes/producto');
+var ticketRouter = require('./routes/ticket');
 var app = express();
 
 // view engine setup
@@ -19,6 +23,13 @@ app.use("/css",express.static("./node_modules/bootstrap/dist/css"));
 app.use("/js",express.static("./node_modules/bootstrap/dist/js"));
 app.use("/",express.static("./node_modules/bootstrap/dist/"));
 
+// moment
+app.use((req, res, next)=>{
+  res.locals.moment = moment;
+  next();
+});
+
+//app start
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -32,6 +43,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use('/', indexRouter);
 //app.use('/users', usersRouter);
 app.use('/', appRouter);
+app.use('/', productoRouter);
+app.use('/', ticketRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

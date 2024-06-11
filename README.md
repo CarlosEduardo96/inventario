@@ -34,6 +34,7 @@ Pasos para crear un proyecto en node.js
 5. Instalacion de morgan.
 6. Instalacion de bootstrap npm.
 7. Instalacion de mysql.
+8. Instalacion de libreria moment para el manejo de fechas
 
 
 
@@ -47,6 +48,7 @@ npm install cookie-parser
 npm install morgan
 npm install bootstrap@5.3.3
 npm install mysql
+npm install moment
 ```
 
 La libreria express sirve para trabajar con plantillas html, css, etc. en nuestro proyecto.
