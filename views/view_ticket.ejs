@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <title>Formulario</title>
+</head>
+<body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="/tickets">Tickets</a>
+        </div>
+      </nav>
+    <br/>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-4 col-sm-12 col-md-4">
+                <h5>Total: <span id="total-txt">0</span></h5>
+                <h5>Productos: <span id="cantidad-txt">0</span></h5>
+                <table class="table">
+                    <thead>
+                        <tr>                            
+                        <th scope="col">Cant.</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="car-product">                          
+                    </tbody>
+                        <%if(ticket_detalle){%>
+                            <% for(var item=0; item < ticket_detalle.length; item++){%>
+                                <tr>
+                                  <th scope="row"><%=ticket_detalle[item].cantidad%></th>
+                                  <th scope="row"><%=ticket_detalle[item].descripcion%></th>
+                                  <th scope="row"><%=ticket_detalle[item].precio%></th>
+                                  <th scope="row"><%=ticket_detalle}[item].total%></th>       
+                                      
+                                </tr> 
+                            <%}%>
+
+                        <%}else{%>
+                            <tr>
+                                <td colspan="7">Sin  resultados</td>
+                            </tr>
+                        <%}%>       
+
+                    </table>
+            </div>
+            
+        </div>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+</body>
+</html>

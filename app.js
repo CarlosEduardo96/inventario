@@ -26,8 +26,12 @@ app.use("/",express.static("./node_modules/bootstrap/dist/"));
 // moment
 app.use((req, res, next)=>{
   res.locals.moment = moment;
-  next();
+  next(); 
 });
+
+// scripts setup
+app.use("/static/js", express.static("./public/javascripts"));
+
 
 //app start
 app.use(logger('dev'));

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
-    <title>Inicio</title>
+    <title>Formulario</title>
 </head>
 <body>
     <nav class="navbar bg-primary">
@@ -21,7 +21,7 @@
             <input type="hidden" name ="id" value="<%=product.id%>"/>
             <div class="col-4 mb-3">
                 <label for="sku" class="form-label">sku</label>
-                <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU del producto" maxlength="30" value="<%=product.sku%>"required>
+                <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU del producto" maxlength="30" value="<%=product.sku%>" oninput="this.value = this.value.toUpperCase()" required>
             </div>
             <div class="col-8 mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
