@@ -36,7 +36,18 @@
                             <th scope="col">Total</th>
                           </tr>
                         </thead>
-                        <tbody id="car-product">                          
+                        <tbody id="car-product">              
+                          <%if(ticket && ticket.ticket_detalle && ticket.ticket_detalle.length > 0 ){%>   
+                            <%for(var item=0; item< ticket.ticket_detalle.length; item++) {%>
+                                <tr>
+                                    <td><%=ticket.ticket_detalle[item].cantidad%></td>
+                                    <td><%=ticket.ticket_detalle[item].descripcion%></td>
+                                    <td><%=ticket.ticket_detalle[item].precio%></td>
+                                    <td><%=ticket.ticket_detalle[item].total%></td>
+                                </tr>
+                            <%}%>
+                          <%}%>
+                                    
                         </tbody>
                       </table>
                 </div>
@@ -54,7 +65,7 @@
                                 
                               </div>
                               <div class="card-footer">
-                                  <a href="#" id="add-lista" onclick="ticket.add_product(<%=lst_productos[item].id%>)" class="btn btn-primary w-100">Agregar</a>
+                                  <a href="#" id="add-lista" onclick=<%= 'ticket.add_product('+ lst_productos[item].id+')'%> class="btn btn-primary w-100">Agregar</a>
                               </div>
                           </div>
                         <%}%>

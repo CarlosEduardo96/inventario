@@ -15,38 +15,35 @@
     <br/>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-4 col-sm-12 col-md-4">
-                <h5>Total: <span id="total-txt">0</span></h5>
-                <h5>Productos: <span id="cantidad-txt">0</span></h5>
+            <div class="col-12">
+                <h5>Fecha de la venta: <span><%= moment(ticket.t_fecha).format('DD/MM/YYYY')%></span></h5>
+                <h5>Folio: <span><%= ticket.t_folio%></span></h5>
+                <h5>Total: <span><%= ticket.t_total%></span></h5>
+                <h5>Productos: <span><%= (ticket_detalle? ticket_detalle.length:0) %></span></h5>
                 <table class="table">
                     <thead>
                         <tr>                            
                         <th scope="col">Cant.</th>
+                        <th scope="col">SKU</th>
                         <th scope="col">Producto</th>
                         <th scope="col">Precio</th>
                         <th scope="col">Total</th>
                         </tr>
                     </thead>
-                    <tbody id="car-product">                          
-                    </tbody>
-                        <%if(ticket_detalle){%>
-                            <% for(var item=0; item < ticket_detalle.length; item++){%>
+                    <tbody id="car-product">            
+                        <%if(ticket_detalle && ticket_detalle.length > 0 ){%>   
+                            <%for(var item=0; item< ticket_detalle.length; item++) {%>
                                 <tr>
-                                  <th scope="row"><%=ticket_detalle[item].cantidad%></th>
-                                  <th scope="row"><%=ticket_detalle[item].descripcion%></th>
-                                  <th scope="row"><%=ticket_detalle[item].precio%></th>
-                                  <th scope="row"><%=ticket_detalle}[item].total%></th>       
-                                      
-                                </tr> 
+                                    <td><%= ticket_detalle[item].td_cantidad%></td>
+                                    <td><%= ticket_detalle[item].pp_sku%></td>
+                                    <td><%= ticket_detalle[item].pp_nombre%></td>
+                                    <td><%= ticket_detalle[item].td_precio%></td>
+                                    <td><%= ticket_detalle[item].td_total%></td>
+                                </tr>
                             <%}%>
-
-                        <%}else{%>
-                            <tr>
-                                <td colspan="7">Sin  resultados</td>
-                            </tr>
-                        <%}%>       
-
-                    </table>
+                          <%}%>              
+                    </tbody>
+                </table>
             </div>
             
         </div>

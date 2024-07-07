@@ -19,38 +19,40 @@ router.post('/ticket/search', function(req, res, next){
 });
 
 router.get('/form/ticket', function(req, res, next){
-    var query ="SELECT * FROM producto;";
+    var query = "SELECT * FROM producto;";
     mysql.query(query, (err, rows, fields) => {
-        res.render('form_tickets',{lst_productos: rows});      
+        res.render('form_tickets',{lst_productos: rows, ticket: null});      
     });
 });
 
-router.get('/form/ticket/:id', function(req, res, next){
-    var ticket_query =`SELECT * FROM ticket where id=${req.params.id}`;
-    var ticket_detalle_query =`SELECT * FROM ticket_detalle where ticket_id =${req.params.id}`;
-    
-    var ticket=null;
-    var ticket_detalle=null;
-    mysql.query(ticket_query, async function (err, rows, fields) {
-        ticket = await rows;
-    });
+router.get('/form/ticket/:id', function (req, res, next){
+    var vew_ticket_detalle_query =`SELECT * FROM view_ticket_detalle where t_id = ${req.params.id}`;
 
-    mysql.query(ticket_detalle_query, async function (err, rows, fields) {
-        ticket_detalle = await rows;      
+    mysql.query(vew_ticket_detalle_query,(err, rows, fields) => {
+        if(err) throw err;
+        
+        res.render('view_ticket',{ticket_detalle: rows, ticket: rows[0]}); 
+        
     });
-
-    res.render('view_ticket',{ticket: ticket, ticket_detalle: ticket_detalle});
 });
 
 router.post('/form/ticket', function(req, res, next){
+    
+    var data = req.body;
+    var ticket_detalle = JSON.parse(req.body.ticket_detalle);
+
+    if (!ticket_detalle || ticket_detalle.length<1){
+        var query = "SELECT * FROM producto;";
+        return mysql.query(query, (err, rows, fields) => {
+            res.render('form_tickets',{lst_productos: rows, ticket: null});   
+        });
+    }
     mysql.beginTransaction(async function(err){
         if (err) {
             return await mysql.rollback(function() {
-              throw err;
+                throw err;
             });
         }
-
-        var ticket_detalle = JSON.parse(req.body.ticket_detalle);
         var insert_ticket=`INSERT INTO ticket(fecha, folio, total) VALUES (NOW(), 'TICKET'+DATE_FORMAT(NOW(), '%Y%m%d%s'), ${req.body.total})`;
         
         var insert_ticket_detalle = "INSERT INTO ticket_detalle(ticket_id,producto_id,precio,cantidad,total) VALUES ";
@@ -67,12 +69,10 @@ router.post('/form/ticket', function(req, res, next){
             }
 
             mysql.commit();
+            mysql.query('SELECT * FROM ticket;', (err, rows, fields) => {
+                res.render('lista_ticket',{lst_tickets: rows});      
+            });
         });       
-    });
-
-
-    mysql.query('SELECT * FROM ticket;', (err, rows, fields) => {
-        res.render('lista_ticket',{lst_tickets: rows});      
     });
 });
 
@@ -105,6 +105,7 @@ router.post('/form/ticket/add-car', function (req, res, next){
 
             if(index >=0){                
                 lista[index].cantidad += detalle.cantidad;
+                lista[index].total = lista[index].precio * lista[index].cantidad;
             }else{
                 lista.push(detalle);
             }
@@ -112,7 +113,7 @@ router.post('/form/ticket/add-car', function (req, res, next){
             var total = 0;
             var cantidad=0;
             lista.forEach(function(element){
-                total += element.total * element.cantidad;
+                total += element.total;
                 cantidad += element.cantidad;
             });
 
