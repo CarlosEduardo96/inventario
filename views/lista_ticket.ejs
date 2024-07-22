@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
+    <title>Inicio</title>
+</head>
+<body>
+    <nav class="navbar bg-primary">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="/">Inicio</a>
+          <form class="d-flex" role="search" method="post" action="/ticket/search">
+            <input class="form-control me-2" name="search" id="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <a class="navbar-brand text-light" href="/form/ticket">Agregar</a>          
+        </div>
+      </nav>
+    <br/>
+    <div class="container">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">FOLIO</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Total</th>
+                <th scope="col">Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <%if(lst_tickets){%>
+                <% for(var item=0; item < lst_tickets.length; item++){%>
+                    <tr>
+                      <th scope="row"><%=lst_tickets[item].id%></th>
+                      <th scope="row"><%=lst_tickets[item].folio%></th>
+                      <th scope="row"><%= moment(lst_tickets[item].fecha).format('DD/MM/YYYY') %></th>
+                      <th scope="row"><%=lst_tickets[item].total%></th>         
+                      <th scope="row">                        
+                        <a class="btn btn-warning" href="/form/ticket/<%=lst_tickets[item].id%>">Ver</a>
+                      </th>     
+                    </tr> 
+                <%}%>
+              <%}else{%>
+                <tr>
+                  <td colspan="7">Sin  resultados</td>
+                </tr>
+              <%}%>              
+            </tbody>
+          </table>
+    </div>
+    <script src="/js/bootstrap.js"></script>
+</body>
+</html>
