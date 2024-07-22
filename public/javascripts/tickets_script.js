@@ -71,8 +71,9 @@ var ticket =( function(){
             if(car_list && car_list.length>0) {
                 
                 for(const element of car_list){
+                    console.log(element.id);
                     $("#car-product").append(`
-                        <tr>
+                        <tr ondblclick="ticket.del_product(${element.producto_id})">
                             <td>${element.cantidad}</td>
                             <td>${element.descripcion}</td>
                             <td>${element.precio}</td>
@@ -102,6 +103,23 @@ var ticket =( function(){
                     `);
                 }
             }
-        }      
+        }  
+        , del_product(producto_id){
+            var lst_productos = JSON.parse($('#ticket_detalle').val())
+            console.log(lst_productos);
+            var index = -1;
+
+            for(let i=0; i< lst_productos.length++; i++){
+                if(lst_productos[i].producto_id===producto_id){
+                    index= i;
+                    break;
+                }
+            }
+
+            if(index>=0){
+                lst_productos =lst_productos.splice(index,1);
+                ticket.refresh_table(lst_productos);
+            }
+        }    
     }
 })();
