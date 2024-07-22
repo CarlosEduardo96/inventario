@@ -18,6 +18,21 @@ router.post('/ticket/search', function(req, res, next){
     });
 });
 
+router.post('/ticket/product/search', function(req, res, next){
+    var query ="SELECT * FROM producto;";
+    if(req.body.search){
+        query= `SELECT * FROM producto WHERE (sku LIKE '%${req.body.search}%' OR nombre LIKE '%${req.body.search}%')`;
+    }
+
+    var code=200;
+    var mensaje='success';
+    console.log(query);
+    mysql.query(query, (err, rows, fields) => {
+        //console.log(rows);
+        res.send(200,{code: code,mensaje:mensaje,lst_productos: rows});      
+    });    
+});
+
 router.get('/form/ticket', function(req, res, next){
     var query = "SELECT * FROM producto;";
     mysql.query(query, (err, rows, fields) => {

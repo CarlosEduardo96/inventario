@@ -10,15 +10,15 @@
     <nav class="navbar bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="/tickets">Tickets</a>    
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <form class="d-flex" role="search" id="search_product">
+            <input class="form-control me-2" id="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>   
         </div>
       </nav>
     <br/>
     <div class="container-fluid">
-        <form class="row" method="post">
+        <form id="form_ticket" class="row" method="post">
            <div class="container-fluid">
             <div class="col-12">
                 <button id="btn-guardar" type="submit" class="btn btn-primary mb-3">VALIDAR COMPRA</button>
@@ -54,7 +54,7 @@
                 <div class="col-8 col-sm-12 col-md-8">
                     <h4>Lista de productos:</h4>
                     
-                    <div class="d-flex flex-wrap">
+                    <div id="lst_catalogo_productos" class="d-flex flex-wrap">
                       <%if(lst_productos){%>
                         <%for(var item=0; item < lst_productos.length; item++){%>
                           <div class="card" style="width: 10rem;">

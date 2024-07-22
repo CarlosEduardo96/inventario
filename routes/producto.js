@@ -10,7 +10,7 @@ router.get('/lista', function(req, res, next){
 }).post('/lista/search', function(req, res, next){
     var query ="SELECT * FROM producto;";
     if(req.body.search){
-        query= `SELECT * FROM producto WHERE (sku ILIKE '%${req.body.search}%' OR nombre ILIKE '%${req.body.search}%')`;
+        query= `SELECT * FROM producto WHERE (sku LIKE '%${req.body.search}%' OR nombre LIKE '%${req.body.search}%')`;
     }
 
     //console.log(query);
