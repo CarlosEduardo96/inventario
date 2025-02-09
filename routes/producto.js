@@ -1,18 +1,19 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('../mysql/dbconection');
+const contorller="/product";
 
-router.get('/lista', function(req, res, next){
+router.get('/product', function(req, res, next){
     mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
-        //console.log(rows);
         res.render('lista',{lst_productos: rows});      
     });
-}).post('/lista/search', function(req, res, next){
+});
+
+router.post(contorller+'/lista/search', function(req, res, next){
     var query ="SELECT * FROM producto;";
     if(req.body.search){
         query= `SELECT * FROM producto WHERE (sku LIKE '%${req.body.search}%' OR nombre LIKE '%${req.body.search}%')`;
     }
-
     //console.log(query);
     mysql.query(query, (err, rows, fields) => {
         //console.log(rows);
@@ -20,7 +21,7 @@ router.get('/lista', function(req, res, next){
     });
 });
 
-router.get('/form/product/:id?',function(req, res, next){
+router.get(contorller+'/form/:id?',function(req, res, next){
     var producto= {
         id: 0
         , nombre:''
@@ -44,7 +45,8 @@ router.get('/form/product/:id?',function(req, res, next){
     }else{
         res.render('form_product', {product: producto});
     }
-}).post('/form/product/:id?', function(req, res, next){
+});
+router.post(contorller+'/form/product/:id?', function(req, res, next){
     // console.log('ID:', req.params.id);
     // console.log(req.body);
     var query = "";
@@ -77,12 +79,16 @@ router.get('/form/product/:id?',function(req, res, next){
     });
 });
 
-router.post('/delete/:id', function(req, res, next){
+router.post(contorller+'/delete/:id', function(req, res, next){
     mysql.query(`DELETE FROM producto WHERE id = ${req.params.id}`);
     mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
         //console.log(rows);
         res.render('lista',{lst_productos: rows});      
     });
+});
+
+router.get(contorller+'/form/imagen/:id', function(req, res, next){
+    res.render('upload_imagen_product');      
 });
 
 module.exports = router;

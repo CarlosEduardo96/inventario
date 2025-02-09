@@ -20,6 +20,22 @@ router.get('/', function(req, res, next) {
     // mysql.end();
     res.render('app');
 });
+router.get('/home', function(req, res, next) {
+    // mysql.connect(function(err){
+    //     if (err){
+    //         console.log("Error de conexion a la base de datos");
+    //     }
+    //     else{
+    //         console.log("Conexion establecida");
+    //     }
+    // });
+
+    // mysql.query('SELECT * FROM refaccion;', (err, rows, fields) => {
+    //     console.log(rows);
+    // })
+    // mysql.end();
+    res.render('app');
+});
 
 module.exports = router;
   

@@ -6,41 +6,74 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
     <title>Formulario</title>
 </head>
-<body>
+<body onload="product.start()">
     <nav class="navbar bg-primary">
         <div class="container-fluid">
-          <a class="navbar-brand text-light" href="/lista">Lista</a>        
+          <a id="view_list" class="navbar-brand text-light" href="/product">Lista</a>        
         </div>
       </nav>
     <br/>
     <div class="container">
-        <form class="row" method="post">
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary mb-3">GUARDAR</button>
+        <div class="row">
+            <!-- Area del formulario -->
+            <div class="col-6">
+                <form id="form_product" class="row" method="post">
+                    <div class="col-12">
+                        <a id="btn_guardar" onclick="product.accion()" class="btn btn-primary mb-3">GUARDAR</a>
+                        <!-- <a id="btn_foto" class="btn btn-success mb-3">Subir Imagen</a> -->
+                    </div>
+                    <input id ="id" name ="id" type="hidden" value="<%=product.id%>"/>
+                    <div class="col-4">
+                        <div class="card">
+                            <img src="/imagen/63f42646-531f-4efa-9161-71dc94026c16.png" class="card-img-top" alt="...">
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <label for="sku" class="form-label">sku</label>
+                        <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU" maxlength="30" value="<%=product.sku%>" oninput="this.value = this.value.toUpperCase()" required>
+                    </div>
+                    <div class="col-12">
+                        <label for="nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre del producto" maxlength="100" value="<%=product.nombre%>" required>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="descripcion" class="form-label">Descripcion</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="200"><%=product.descripcion%></textarea>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="precio" class="form-label">Precio</label>
+                        <input class="form-control" id="precio" name="precio" rows="3"  value="<%=product.precio%>" required/>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label for="cantidad" class="form-label">cantidad</label>
+                        <input class="form-control" id="descripcion" name="cantidad" rows="3" type="number" value="<%=product.cantidad%>" required>
+                    </div>
+                </form>
             </div>
-            <input type="hidden" name ="id" value="<%=product.id%>"/>
-            <div class="col-4 mb-3">
-                <label for="sku" class="form-label">sku</label>
-                <input type="text" class="form-control" id="sku" name="sku" placeholder="SKU del producto" maxlength="30" value="<%=product.sku%>" oninput="this.value = this.value.toUpperCase()" required>
-            </div>
-            <div class="col-8 mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Nombre del producto" maxlength="100" value="<%=product.nombre%>" required>
-            </div>
-            <div class="col-12 mb-3">
-                <label for="descripcion" class="form-label">Descripcion</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" maxlength="200"><%=product.descripcion%></textarea>
-            </div>
-            <div class="col-6 mb-3">
-                <label for="precio" class="form-label">Precio</label>
-                <input class="form-control" id="precio" name="precio" rows="3"  value="<%=product.precio%>"  required/>
-            </div>
-            <div class="col-6 mb-3">
-                <label for="cantidad" class="form-label">cantidad</label>
-                <input class="form-control" id="descripcion" name="cantidad" rows="3" type="number" value="<%=product.cantidad%>" required>
-            </div>
-        </form>
+
+            <!-- Area de las fotos -->
+             <div class="col-6">
+                <form class="form-control">
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="foto_upload" aria-describedby="foto_upload_send" aria-label="Cargar" accept="image/png, image/jpeg">
+                        <button class="btn btn-outline-secondary" type="button" id="foto_upload_send">Agregar</button>
+                    </div>
+                </form>
+
+                <div class="pt-4 row row-cols-4">                    
+                    <div class="card p-0">
+                        <img src="/imagen/63f42646-531f-4efa-9161-71dc94026c16.png" class="card-img-top" alt="...">
+                        <div class="card-body p-0">
+                            <a class="btn btn-primary col-12">Elejir</a>
+                        </div>
+                    </div>                                     
+                </div>                
+             </div>
+        </div>
     </div>
     <script src="/js/bootstrap.js"></script>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/form_products.js"></script>
+    <script src="/static/js/generate_token.js"></script>
 </body>
 </html>
