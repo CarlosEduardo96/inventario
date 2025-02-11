@@ -6,11 +6,11 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
     <title>Inicio</title>
 </head>
-<body>
+<body onload="product.start()">
     <nav class="navbar bg-primary">
         <div class="container-fluid">
           <a class="navbar-brand text-light" href="/">Inicio</a>
-          <form class="d-flex" role="search" method="post" action="/product/lista/search">
+          <form class="d-flex" role="search" method="post" action="/product">
             <input class="form-control me-2" name="search" id="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
@@ -45,8 +45,8 @@
                         <a class="btn btn-warning" href="product/form/<%=lst_productos[item].id%>">Editar</a>
                       </th>      
                       <th scope="row">
-                        <form method="post" action="product/delete/<%=lst_productos[item].id%>">                          
-                          <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <form>                          
+                          <button type="button" onclick="product.eliminar(<%=lst_productos[item].id%>)" class="btn btn-danger">Eliminar</button>
                         </form>
                       </th>                
                     </tr> 
@@ -60,5 +60,7 @@
           </table>
     </div>
     <script src="/js/bootstrap.js"></script>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/product_list.js"></script>
 </body>
 </html>

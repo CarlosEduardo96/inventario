@@ -1,7 +1,17 @@
 var express = require('express');
-var router = express.Router();
+var fileUpload = require('express-fileupload');
 var mysql = require('../mysql/dbconection');
+var router = express.Router();
 const contorller="/product";
+
+router.use(fileUpload({
+    // Configure file uploads with maximum file size 10MB
+    limits: { fileSize: 10 * 1024 * 1024 },
+
+    // Temporarily store uploaded files to disk, rather than buffering in memory
+    useTempFiles : true,
+    tempFileDir : '/temp/'
+}));
 
 router.get('/product', function(req, res, next){
     mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
@@ -9,7 +19,7 @@ router.get('/product', function(req, res, next){
     });
 });
 
-router.post(contorller+'/lista/search', function(req, res, next){
+router.post(contorller, function(req, res, next){
     var query ="SELECT * FROM producto;";
     if(req.body.search){
         query= `SELECT * FROM producto WHERE (sku LIKE '%${req.body.search}%' OR nombre LIKE '%${req.body.search}%')`;
@@ -46,11 +56,11 @@ router.get(contorller+'/form/:id?',function(req, res, next){
         res.render('form_product', {product: producto});
     }
 });
-router.post(contorller+'/form/product/:id?', function(req, res, next){
+router.put(contorller+'/form/save', function(req, res, next){
     // console.log('ID:', req.params.id);
-    // console.log(req.body);
+    console.log(req);
     var query = "";
-    if(req.params.id){
+    if(req.body.id>0){
         query = `UPDATE producto SET 
         sku= '${req.body.sku}'
         , nombre='${req.body.nombre}'
@@ -58,6 +68,11 @@ router.post(contorller+'/form/product/:id?', function(req, res, next){
         , precio =${req.body.precio}
         , cantidad = ${req.body.cantidad}
         WHERE id = ${req.body.id}`;
+
+        mysql.query(query);
+        mysql.query(query, (err, rows, fields)=>{
+            res.json({code:200,msg:"success",action:'update',data: req.body});
+        });
     }
     else{
         query = `INSERT INTO 
@@ -70,25 +85,60 @@ router.post(contorller+'/form/product/:id?', function(req, res, next){
                 , ${req.body.cantidad}
             )
         `
+        mysql.query(query, (err, rows, fields)=>{
+            req.body.id = rows.insertId;
+            res.json({code:200,msg:"success", action:'create', data: req.body});
+        });
     }
-    mysql.query(query);
-
-    mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
-        // console.log(rows);
-        res.render('lista',{lst_productos: rows});      
-    });
 });
 
-router.post(contorller+'/delete/:id', function(req, res, next){
-    mysql.query(`DELETE FROM producto WHERE id = ${req.params.id}`);
-    mysql.query('SELECT * FROM producto;', (err, rows, fields) => {
-        //console.log(rows);
-        res.render('lista',{lst_productos: rows});      
-    });
+router.post(contorller+'/delete', function(req, res, next){
+    console.log(req.body.id);
+    mysql.query(`DELETE FROM producto WHERE id = ${req.body.id}`);
+    res.json({code:200,msg:"success",action:'delete',data: req.body.id});
 });
 
-router.get(contorller+'/form/imagen/:id', function(req, res, next){
-    res.render('upload_imagen_product');      
+router.put(contorller+'/form/imagen', async function(req, res, next){
+    console.log(req.body);
+    var imagen = req.files.image;
+    if (!imagen || !imagen) {
+        return res.json({code:422,msg:"No files were uploaded", action:'create', data: false});
+    }
+    if(!req.body.uuid || !req.body.product_id ){
+        return res.json({code:422,msg:"Faltan parametros", action:'create', data: false});
+    }
+
+    var imagen_producto={
+        id: 0
+        , uuid: req.body.uuid
+        , producto_id: req.body.product_id
+        , activo: false
+    };
+
+    var sql_insert = `
+        INSERT INTO producto_imagen(uuid, producto_id)
+        VALUES('${req.body.uuid}', ${req.body.product_id})
+    `;
+
+    var sql_exists=`SELECT * FROM producto_imagen WHERE uuid='${req.body.uuid}'`;
+    console.log(sql_exists);
+    mysql.query(sql_exists, function(err_r, rows_r, fields_r){
+        if (rows_r && rows_r.length > 0){
+            res.json({code:200,msg:"la imagen ya existe",action:'send-image',data: false});
+        }else{
+            
+            mysql.query(sql_insert, function(err, rows, fields){
+                if(err) return res.json({code:200,msg:"Error al guardar la imagen",action:'send-image',data: err});
+                imagen_producto.id = rows.insertId;
+                imagen.mv("./temp/"+req.body.uuid+'.jpg', function(error){
+                    if(error) return res.status(500).send({ message : error })
+                });
+                return res.json({code:200,msg:"success",action:'send-image',data: imagen_producto}); 
+            });
+        }
+    });
+
+    
 });
 
 module.exports = router;

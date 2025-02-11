@@ -49,6 +49,10 @@ npm install morgan
 npm install bootstrap@5.3.3
 npm install mysql
 npm install moment
+//Files
+npm install express-fileupload
+npm install node-fetch@^2.6.6
+npm install form-data
 ```
 
 La libreria express sirve para trabajar con plantillas html, css, etc. en nuestro proyecto.
@@ -64,3 +68,5 @@ express --view=ejs
 * [bootstrap](https://getbootstrap.com)
 * [MySQl](https://www.mysql.com)
 * [npm > mysql](https://www.npmjs.com/package/mysql)
+* [uploadFiles](https://medium.com/@ionx/how-to-handle-file-uploads-with-node-js-and-express-a20c48d0b55d)
+* [Save Files Node JS](https://ed.team/blog/como-subir-archivos-al-servidor-con-nodejs)

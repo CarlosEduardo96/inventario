@@ -31,7 +31,7 @@ CREATE TABLE ticket_detalle (
 
 CREATE TABLE producto_imagen (
 	id int AUTO_INCREMENT PRIMARY KEY,
-	uuid VARCHAR(38),
+	uuid VARCHAR(38) UNIQUE not null,
 	producto_id int not null,
 	activo BOOLEAN DEFAULT FALSE,
 	CONSTRAINT FOREIGN KEY(producto_id) REFERENCES producto(id)

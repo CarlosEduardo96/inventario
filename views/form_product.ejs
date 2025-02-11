@@ -17,12 +17,12 @@
         <div class="row">
             <!-- Area del formulario -->
             <div class="col-6">
-                <form id="form_product" class="row" method="post">
+                <form id="form_product" class="row">
                     <div class="col-12">
                         <a id="btn_guardar" onclick="product.accion()" class="btn btn-primary mb-3">GUARDAR</a>
                         <!-- <a id="btn_foto" class="btn btn-success mb-3">Subir Imagen</a> -->
                     </div>
-                    <input id ="id" name ="id" type="hidden" value="<%=product.id%>"/>
+                    <input id ="id" name ="id" type="hidden" value="<%=product.id%>"/>                    
                     <div class="col-4">
                         <div class="card">
                             <img src="/imagen/63f42646-531f-4efa-9161-71dc94026c16.png" class="card-img-top" alt="...">
@@ -53,10 +53,10 @@
 
             <!-- Area de las fotos -->
              <div class="col-6">
-                <form class="form-control">
+                <form class="form-control" id="form_image">
                     <div class="input-group">
-                        <input type="file" class="form-control" id="foto_upload" aria-describedby="foto_upload_send" aria-label="Cargar" accept="image/png, image/jpeg">
-                        <button class="btn btn-outline-secondary" type="button" id="foto_upload_send">Agregar</button>
+                        <input type="file" class="form-control" id="foto_upload" aria-describedby="foto_upload_send" aria-label="Cargar" accept="image/jpeg">
+                        <button class="btn btn-outline-secondary" type="button" onclick="product.enviar_foto()">Agregar</button>
                     </div>
                 </form>
 
