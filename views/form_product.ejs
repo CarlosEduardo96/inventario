@@ -22,10 +22,11 @@
                         <a id="btn_guardar" onclick="product.accion()" class="btn btn-primary mb-3">GUARDAR</a>
                         <!-- <a id="btn_foto" class="btn btn-success mb-3">Subir Imagen</a> -->
                     </div>
-                    <input id ="id" name ="id" type="hidden" value="<%=product.id%>"/>                    
+                    <input id ="id" name ="id" type="hidden" value="<%=product.id%>"/>
+                    <input id ="list_productos" name ="list_productos" type="hidden" value="<%=JSON.stringify(product.list_productos)%>"/>                    
                     <div class="col-4">
                         <div class="card">
-                            <img src="/imagen/63f42646-531f-4efa-9161-71dc94026c16.png" class="card-img-top" alt="...">
+                            <img id="image_active" src="/imagen/<%=product.image_active%>.jpg" class="card-img-top" height="125" width="125">
                         </div>
                     </div>
                     <div class="col-8">
@@ -60,20 +61,24 @@
                     </div>
                 </form>
 
-                <div class="pt-4 row row-cols-4">                    
-                    <div class="card p-0">
-                        <img src="/imagen/63f42646-531f-4efa-9161-71dc94026c16.png" class="card-img-top" alt="...">
-                        <div class="card-body p-0">
-                            <a class="btn btn-primary col-12">Elejir</a>
-                        </div>
-                    </div>                                     
+                <div class="pt-4 row row-cols-4">
+                    <%if(product.list_productos){%>
+                        <%for(var item = 0 ; item < product.list_productos.length; item++){%>
+                            <div class="card p-0">
+                                <img src="/imagen/<%=product.list_productos[item].uuid%>.jpg" class="card-img-top"  height="125" width="125">
+                                <div class="card-body p-0">
+                                    <button class="btn btn-primary col-12" onclick="product.btn_elegir_imagen(<%=product.list_productos[item].id%>)">Elejir</button>
+                                </div>
+                            </div>    
+                        <%}%>
+                    <%}%>                    
                 </div>                
              </div>
         </div>
     </div>
     <script src="/js/bootstrap.js"></script>
     <script src="/static/js/jquery-3.7.1.min.js"></script>
-    <script src="/static/js/form_products.js"></script>
     <script src="/static/js/generate_token.js"></script>
+    <script src="/static/js/form_products.js"></script>
 </body>
 </html>

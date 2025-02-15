@@ -20,6 +20,7 @@ var product = (function(){
             var data = $("#form_product").serializeArray().reduce(
                 function(objet, data) { objet[data.name] = data.value; return objet; }, {}
             );
+            data.id = parseInt(data.id? data.id:0);
             return data;
         }
         , accion: function(){
@@ -42,40 +43,77 @@ var product = (function(){
                 },
             });
         }
-        , enviar_foto:function(){
+        , enviar_foto: function(){
             const uuid = token.uuidv4();
-            const files = $("#foto_upload");
+            const input_files = $("#foto_upload")[0].files;
             const product = this.array_data_form();
 
-            if(product.id && product.id>0){
-                var formData = new FormData();    
-                var url = url_path+'form/imagen';
-                formData.append('uuid', uuid);
-                formData.append('product_id', product.id);
-                formData.append('image', files[0]);
-                
+            if (input_files.length==0){
+                alert("Seleccione una imagen.");
+                return;
+            }
+            if (product.id==0){
+                alert("Nesecita guardar el registro para subir las imagenes");
+                return;
+            }
+           
+            var formData = new FormData();    
+            var url = url_path+'form/imagen';
+            formData.append('uuid', uuid);
+            formData.append('product_id', product.id);
+            formData.append('image', input_files[0]);
+            
 
+            $.ajax({
+                type: "POST"
+                , url: url
+                , data: formData
+                , mimeType: "multipart/form-data"
+                , contentType: false
+                , cache: false
+                , processData: false
+                , success: function(response){
+                    console.log(response);
+                    $("#foto_upload").val(null);
+                    alert("¡Guardado con exito!");
+                    location.reload();
+                },
+                error: function(jqXHR, textStatus, errorThrown){
+                    alert(errorThrown);
+                },
+            });                
+                 
+        }
+        , btn_elegir_imagen(id){
+            const producto = this.array_data_form();
+            const data = {id: id, producto_id: producto.id};
+
+            if(!Boolean(id) || !Boolean(producto.id)){
+                alert("Faltan parametros");
+                return;
+            }else{
                 $.ajax({
-                    type: "PUT"
-                    , url: url
-                    , data: formData
-                    , processData: false  // tell jQuery not to process the data
-                    , contentType: false  // tell jQuery not to set contentType
-                    , success: function(response){
-                        console.log(response);
-                        alert("¡Guardado con exito!");
+                    type: "POST",
+                    url: url_path+'form/imagen/active',
+                    data: data,
+                    dataType: 'json'
+                    ,success: function(response){
+                        
+                        if(response.code == 200){
+                            console.log(response);
+                            $('#image_active').attr('src', `/imagen/${response.data[0].uuid}.jpg`);
+
+                        }
+                        
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert(errorThrown);
                     },
-                });                
-            }else{
-                alert("Nesecita guardar el registro para subir las imagenes");
-            }          
-
+                });
+                
+            }
+            
         }
-        // , view_list: function(){
-        //     $("#view_list").on('click', true);
-        // }
+        
     };
 })();

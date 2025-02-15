@@ -38,18 +38,38 @@ router.get(contorller+'/form/:id?',function(req, res, next){
         , descripcion: ''
         , precio: 0
         , cantidad: 0
+        , image_active: ''
+        , list_productos: []
     }
     if (req.params.id){
         //console.log('ID:', req.params.id);
+        
         mysql.query(`SELECT * FROM producto WHERE id = ${req.params.id}`, (err, rows, fields) => {
-            //console.log(rows);
+                //console.log(rows);
             producto.id = rows[0].id;
             producto.sku = rows[0].sku;
             producto.nombre = rows[0].nombre;
             producto.descripcion = rows[0].descripcion;
             producto.precio = rows[0].precio;
             producto.cantidad = rows[0].cantidad;
-            res.render('form_product',{product: producto});      
+            
+            mysql.query(`SELECT * FROM producto_imagen WHERE producto_id = ${req.params.id}`, (err, rows, fields) => {
+                producto.list_productos = rows;
+                if(producto.list_productos.length>0){
+                    for(const imagen of producto.list_productos){
+                        
+                        if(imagen.activo){
+                            producto.image_active = imagen;
+                            break;
+                        }
+                    }
+                    producto.image_active = (producto && producto.image_active.uuid? producto.image_active.uuid : '');
+                    res.render('form_product',{product: producto});
+                }else{
+                    res.render('form_product',{product: producto});
+                }
+            });
+            
         });
 
     }else{
@@ -98,8 +118,7 @@ router.post(contorller+'/delete', function(req, res, next){
     res.json({code:200,msg:"success",action:'delete',data: req.body.id});
 });
 
-router.put(contorller+'/form/imagen', async function(req, res, next){
-    console.log(req.body);
+router.post(contorller+'/form/imagen', function(req, res, next){    
     var imagen = req.files.image;
     if (!imagen || !imagen) {
         return res.json({code:422,msg:"No files were uploaded", action:'create', data: false});
@@ -139,6 +158,18 @@ router.put(contorller+'/form/imagen', async function(req, res, next){
     });
 
     
+});
+
+router.post(contorller+'/form/imagen/active', function(req, res, next){
+    if(!req.body || !req.body.id || !req.body.producto_id || req.body.id <1 ||req.body.producto_id<1 ){
+        return res.json({code:422,msg:"Faltan parametros", action:'active_imagen', data: false});
+    }
+
+    mysql.query(`UPDATE producto_imagen SET activo = false WHERE producto_id =  ${req.body.producto_id} `);
+    mysql.query(`UPDATE producto_imagen SET activo = true WHERE id =  ${req.body.id} `);
+    mysql.query(`select * from producto_imagen where id=${req.body.id}`, function(err, rows, fields){
+        return res.json({code:200,msg:"success",action:'send-image',data: rows}); 
+    });
 });
 
 module.exports = router;
