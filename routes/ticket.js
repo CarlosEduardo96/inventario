@@ -34,7 +34,20 @@ router.post('/ticket/product/search', function(req, res, next){
 });
 
 router.get('/form/ticket', function(req, res, next){
-    var query = "SELECT * FROM producto;";
+    var query = `
+    WITH imagen AS (
+        SELECT 
+            uuid
+            , producto_id
+            , activo
+        FROM producto_imagen 
+    )
+    SELECT 
+        *
+        , (
+            SELECT uuid FROM imagen i WHERE i.producto_id = p.id LIMIT 1
+        ) as imagen_activa
+    FROM producto p;`;
     mysql.query(query, (err, rows, fields) => {
         res.render('form_tickets',{lst_productos: rows, ticket: null});      
     });
@@ -45,9 +58,7 @@ router.get('/form/ticket/:id', function (req, res, next){
 
     mysql.query(vew_ticket_detalle_query,(err, rows, fields) => {
         if(err) throw err;
-        
-        res.render('view_ticket',{ticket_detalle: rows, ticket: rows[0]}); 
-        
+        res.render('view_ticket',{ticket_detalle: rows, ticket: rows[0]});
     });
 });
 
@@ -131,6 +142,9 @@ router.post('/form/ticket/add-car', function (req, res, next){
                 total += element.total;
                 cantidad += element.cantidad;
             });
+            if(total>0){
+                total = total.toFixed(2);
+            }
 
         }
         return res.send(200,{code: code, mensaje: mensaje, lista: lista, total: total, cantidad: cantidad}); 

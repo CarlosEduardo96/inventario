@@ -98,22 +98,16 @@ var product = (function(){
                     data: data,
                     dataType: 'json'
                     ,success: function(response){
-                        
                         if(response.code == 200){
                             console.log(response);
                             $('#image_active').attr('src', `/imagen/${response.data[0].uuid}.jpg`);
-
                         }
-                        
                     },
                     error: function(jqXHR, textStatus, errorThrown){
                         alert(errorThrown);
                     },
                 });
-                
             }
-            
         }
-        
     };
 })();

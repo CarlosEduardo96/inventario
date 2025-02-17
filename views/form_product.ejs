@@ -26,7 +26,11 @@
                     <input id ="list_productos" name ="list_productos" type="hidden" value="<%=JSON.stringify(product.list_productos)%>"/>                    
                     <div class="col-4">
                         <div class="card">
-                            <img id="image_active" src="/imagen/<%=product.image_active%>.jpg" class="card-img-top" height="125" width="125">
+                            <%if(product.image_active){%>
+                                <img id="image_active" src="/imagen/<%=product.image_active%>.jpg" class="card-img-top" height="125" width="125">
+                            <%}else{%>
+                                <img src="/static/imagen/default.jpg" class="card-img-top" alt="...">
+                            <%}%>
                         </div>
                     </div>
                     <div class="col-8">
@@ -65,7 +69,11 @@
                     <%if(product.list_productos){%>
                         <%for(var item = 0 ; item < product.list_productos.length; item++){%>
                             <div class="card p-0">
-                                <img src="/imagen/<%=product.list_productos[item].uuid%>.jpg" class="card-img-top"  height="125" width="125">
+                                <%if(product.list_productos[item].uuid){%>
+                                    <img src="/imagen/<%=product.list_productos[item].uuid%>.jpg" class="card-img-top"  height="125" width="125">
+                                <%}else{%>
+                                    <img src="/static/imagen/default.jpg" class="card-img-top" alt="...">
+                                <%}%>
                                 <div class="card-body p-0">
                                     <button class="btn btn-primary col-12" onclick="product.btn_elegir_imagen(<%=product.list_productos[item].id%>)">Elejir</button>
                                 </div>

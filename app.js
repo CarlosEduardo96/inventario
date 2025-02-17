@@ -35,6 +35,7 @@ app.use((req, res, next)=>{
 
 // scripts setup
 app.use("/static/js", express.static("./public/javascripts"));
+app.use("/static/imagen", express.static("./public/imagenes"));
 app.use("/imagen", express.static("./temp"));
 
 

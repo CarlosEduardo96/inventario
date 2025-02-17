@@ -145,7 +145,6 @@ router.post(contorller+'/form/imagen', function(req, res, next){
         if (rows_r && rows_r.length > 0){
             res.json({code:200,msg:"la imagen ya existe",action:'send-image',data: false});
         }else{
-            
             mysql.query(sql_insert, function(err, rows, fields){
                 if(err) return res.json({code:200,msg:"Error al guardar la imagen",action:'send-image',data: err});
                 imagen_producto.id = rows.insertId;
@@ -155,9 +154,7 @@ router.post(contorller+'/form/imagen', function(req, res, next){
                 return res.json({code:200,msg:"success",action:'send-image',data: imagen_producto}); 
             });
         }
-    });
-
-    
+    });    
 });
 
 router.post(contorller+'/form/imagen/active', function(req, res, next){
