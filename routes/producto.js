@@ -169,4 +169,14 @@ router.post(contorller+'/form/imagen/active', function(req, res, next){
     });
 });
 
+router.post(contorller+'/form/imagen/delete', function(req, res, next){
+    console.log("ENTRE QUI");
+    if(!req.body || !req.body.id || req.body.id < 1 ){
+        return res.json({code:422,msg:"Faltan parametros", action:'active_imagen', data: false});
+    }
+    
+    mysql.query(`DELETE FROM producto_imagen WHERE id = ${req.body.id}`);
+    return res.json({code:200,msg:"success",action:'delete-image',data: req.body.id });
+});
+
 module.exports = router;

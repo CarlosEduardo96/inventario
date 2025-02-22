@@ -145,7 +145,6 @@ router.post('/form/ticket/add-car', function (req, res, next){
             if(total>0){
                 total = total.toFixed(2);
             }
-
         }
         return res.send(200,{code: code, mensaje: mensaje, lista: lista, total: total, cantidad: cantidad}); 
     });

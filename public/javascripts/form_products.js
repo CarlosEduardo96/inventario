@@ -99,8 +99,29 @@ var product = (function(){
                     dataType: 'json'
                     ,success: function(response){
                         if(response.code == 200){
-                            console.log(response);
-                            $('#image_active').attr('src', `/imagen/${response.data[0].uuid}.jpg`);
+                            // console.log(response);
+                            // $('#image_active').attr('src', `/imagen/${response.data[0].uuid}.jpg`);
+                            location.reload();
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        alert(errorThrown);
+                    },
+                });
+            }
+        }
+        , btn_eliminar_imagen(id){
+            var ok = confirm("¡Estas eseguro de eliminar la imagen!");
+            if(ok){
+                $.ajax({
+                    type: "POST",
+                    url: url_path+'form/imagen/delete',
+                    data: {id: id},
+                    dataType: 'json'
+                    ,success: function(response){
+                        if(response.code == 200){
+                            alert("¡Imagen eliminada!");
+                            location.reload();
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown){
